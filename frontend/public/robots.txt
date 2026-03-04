@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://smart-college-campaign.vercel.app/sitemap.xml

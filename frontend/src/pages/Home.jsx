@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 import BrandLogo from "../components/BrandLogo";
@@ -12,6 +13,14 @@ const Home = ({ user }) => {
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 dark:text-slate-100 min-h-screen">
+      <Helmet>
+        <title>Smart College Companion</title>
+        <meta
+          name="description"
+          content="AI-powered academic management platform for attendance, assignments, notices, and student productivity."
+        />
+      </Helmet>
+
       {/* ================= NAVBAR ================= */}
       <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
