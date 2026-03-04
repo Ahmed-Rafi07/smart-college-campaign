@@ -1,7 +1,6 @@
-const DEFAULT_SESSION_MESSAGE = "Session expired. Please login again.";
+import { API_BASE_URL, buildApiUrl } from "./apiBase";
 
-const BASE_URL =
-  import.meta.env.VITE_API_URL || "https://smart-college-campaign.onrender.com";
+const DEFAULT_SESSION_MESSAGE = "Session expired. Please login again.";
 
 let unauthorizedHandled = false;
 
@@ -37,7 +36,9 @@ export const apiRequest = async (url, options = {}, navigate) => {
     return null;
   }
 
-  const res = await fetch(`${BASE_URL}${url}`, {
+  const requestUrl = /^https?:\/\//i.test(url) ? url : buildApiUrl(url);
+
+  const res = await fetch(requestUrl, {
     ...options,
     headers: {
       ...(options.headers || {}),
@@ -60,3 +61,5 @@ export const apiRequest = async (url, options = {}, navigate) => {
   const data = await parseJsonSafe(res);
   return data ?? {};
 };
+
+export { API_BASE_URL };
