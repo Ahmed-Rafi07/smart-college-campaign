@@ -48,7 +48,7 @@ const generateStudyPlan = (examDate) => {
    API HELPERS
 ======================== */
 const fetchSubjectsAPI = async (token) => {
-  const res = await fetch("http://localhost:5000/api/subjects", {
+  const res = await fetch("https://smart-college-campaign.onrender.com/api/subjects", {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 401) throw new Error("UNAUTHORIZED");
@@ -56,7 +56,7 @@ const fetchSubjectsAPI = async (token) => {
 };
 const fetchAssignmentsAPI = async (token) => {
   try {
-    const res = await fetch("http://localhost:5000/api/assignments", {
+    const res = await fetch("https://smart-college-campaign.onrender.com/api/assignments", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -75,7 +75,7 @@ const fetchAssignmentsAPI = async (token) => {
 };
 
 const fetchAttendanceSummaryAPI = async (token) => {
-  const res = await fetch("http://localhost:5000/api/attendance/summary", {
+  const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance/summary", {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to fetch attendance summary");
@@ -83,7 +83,7 @@ const fetchAttendanceSummaryAPI = async (token) => {
 };
 
 const deleteAssignmentAPI = async (token, id) => {
-  const res = await fetch(`http://localhost:5000/api/assignments/${id}`, {
+  const res = await fetch(`https://smart-college-campaign.onrender.com/api/assignments/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -165,14 +165,14 @@ const StudentDashboard = ({ user }) => {
         setAssignments(Array.isArray(assignmentsRes) ? assignmentsRes : []);
 
         // ✅ Fetch exams
-        const examsRes = await fetch("http://localhost:5000/api/exams", {
+        const examsRes = await fetch("https://smart-college-campaign.onrender.com/api/exams", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const examsData = await examsRes.json();
         setExams(Array.isArray(examsData) ? examsData : []);
 
         // ✅ Fetch urgent notices
-        const urgentRes = await fetch("http://localhost:5000/api/notices/urgent", {
+        const urgentRes = await fetch("https://smart-college-campaign.onrender.com/api/notices/urgent", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (urgentRes.ok) {
@@ -273,7 +273,7 @@ const StudentDashboard = ({ user }) => {
     setExamPlannerLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/ai/study-plan", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -312,7 +312,7 @@ const StudentDashboard = ({ user }) => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/exams", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/exams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -347,7 +347,7 @@ const StudentDashboard = ({ user }) => {
   const handleDeleteExam = async (id) => {
     const token = localStorage.getItem("token");
 
-    await fetch(`http://localhost:5000/api/exams/${id}`, {
+    await fetch(`https://smart-college-campaign.onrender.com/api/exams/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -365,7 +365,7 @@ const StudentDashboard = ({ user }) => {
       setAddingSubject(true);
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/subjects", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/subjects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -396,7 +396,7 @@ const StudentDashboard = ({ user }) => {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`http://localhost:5000/api/subjects/${subjectId}`, {
+      await fetch(`https://smart-college-campaign.onrender.com/api/subjects/${subjectId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -423,7 +423,7 @@ const StudentDashboard = ({ user }) => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/assignments", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/assignments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -454,7 +454,7 @@ const StudentDashboard = ({ user }) => {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        `http://localhost:5000/api/assignments/${id}/toggle`,
+        `https://smart-college-campaign.onrender.com/api/assignments/${id}/toggle`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
@@ -498,7 +498,7 @@ const StudentDashboard = ({ user }) => {
      ATTENDANCE LOGIC
   ======================== */
   const markAttendanceAPI = async (token, subjectId, status) => {
-    const res = await fetch("http://localhost:5000/api/attendance", {
+    const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1532,7 +1532,7 @@ const StudyPlanner = () => {
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/ai/study-plan", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1608,7 +1608,7 @@ const AIStudyPlannerForExam = ({ examTitle, examSubject, examDate }) => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/ai/study-plan", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

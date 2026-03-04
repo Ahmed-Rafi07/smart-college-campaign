@@ -23,7 +23,7 @@ const Register = () => {
         throw new Error("All fields are required");
       }
 
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
