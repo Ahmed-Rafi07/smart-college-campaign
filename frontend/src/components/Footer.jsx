@@ -16,7 +16,7 @@ const Newsletter = () => {
       setStatus("loading");
 
       // 🔁 Call backend API
-      const res = await fetch("http://localhost:5000/api/newsletter/subscribe", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

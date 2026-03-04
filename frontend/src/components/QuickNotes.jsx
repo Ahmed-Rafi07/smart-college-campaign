@@ -16,7 +16,7 @@ export default function QuickNotes() {
   const token = localStorage.getItem("token");
 
   const fetchNotes = async () => {
-    const res = await fetch("http://localhost:5000/api/notes", {
+    const res = await fetch("https://smart-college-campaign.onrender.com/api/notes", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -36,7 +36,7 @@ export default function QuickNotes() {
     setSaving(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/notes", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function QuickNotes() {
   };
 
   const summarizeNote = async (id) => {
-    await fetch(`http://localhost:5000/api/notes/${id}/summarize`, {
+    await fetch(`https://smart-college-campaign.onrender.com/api/notes/${id}/summarize`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -72,7 +72,7 @@ export default function QuickNotes() {
 
   const deleteNote = async (id) => {
     if (window.confirm("Delete this note?")) {
-      await fetch(`http://localhost:5000/api/notes/${id}`, {
+      await fetch(`https://smart-college-campaign.onrender.com/api/notes/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -85,7 +85,7 @@ export default function QuickNotes() {
     
     setLoadingSummary(true);
     try {
-      const res = await fetch("http://localhost:5000/api/ai/summarize", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/summarize", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

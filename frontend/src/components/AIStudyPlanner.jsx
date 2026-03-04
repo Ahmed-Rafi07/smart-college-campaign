@@ -47,7 +47,7 @@ export default function AIStudyPlanner() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/ai/study-plan", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

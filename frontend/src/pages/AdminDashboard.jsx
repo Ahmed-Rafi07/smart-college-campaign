@@ -36,7 +36,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/admin/analytics", {
+        const res = await fetch("https://smart-college-campaign.onrender.com/api/admin/analytics", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
     const fetchCharts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/admin/charts", {
+        const res = await fetch("https://smart-college-campaign.onrender.com/api/admin/charts", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
     const fetchSubjects = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/subjects", {
+        const res = await fetch("https://smart-college-campaign.onrender.com/api/subjects", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -110,7 +110,7 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/admin/users", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
   const blockUser = async (id, blocked) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}/block`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/admin/users/${id}/block`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
   const forceLogout = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}/logout`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/admin/users/${id}/logout`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
   const resetAttendance = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}/attendance`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/admin/users/${id}/attendance`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -197,7 +197,7 @@ const AdminDashboard = () => {
       }
 
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/admin/broadcast", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/admin/broadcast", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

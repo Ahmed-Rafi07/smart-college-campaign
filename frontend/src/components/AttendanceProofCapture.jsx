@@ -80,7 +80,7 @@ const AttendanceProofCapture = ({ subjectId, subjectName, onSuccess, onCancel, t
         formData.append("classCode", classCode);
       }
 
-      const res = await fetch("http://localhost:5000/api/attendance", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

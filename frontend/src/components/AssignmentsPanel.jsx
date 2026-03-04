@@ -12,7 +12,7 @@ const AssignmentsPanel = ({ token }) => {
   ========================= */
   const fetchAssignments = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/assignments", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/assignments", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -47,7 +47,7 @@ const AssignmentsPanel = ({ token }) => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/assignments", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/assignments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

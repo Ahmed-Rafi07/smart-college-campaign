@@ -24,7 +24,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/users/profile/${user._id}`, {
+        const res = await fetch(`https://smart-college-campaign.onrender.com/api/users/profile/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -50,7 +50,7 @@ const Profile = () => {
   const handleSaveChanges = async () => {
     try {
       setError("");
-      const res = await fetch(`http://localhost:5000/api/users/profile/${user._id}`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/users/profile/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

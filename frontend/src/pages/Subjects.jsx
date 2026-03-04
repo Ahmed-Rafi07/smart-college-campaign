@@ -12,7 +12,7 @@ const Subjects = () => {
     try {
       setError("");
       const data = await apiRequest(
-        "http://localhost:5000/api/subjects",
+        "/api/subjects",
         {},
         navigate
       );
@@ -31,7 +31,7 @@ const Subjects = () => {
     if (!name) return;
 
     const data = await apiRequest(
-      "http://localhost:5000/api/subjects",
+      "/api/subjects",
       {
         method: "POST",
         headers: {
@@ -56,7 +56,7 @@ const Subjects = () => {
     if (!confirmDelete) return;
 
     const data = await apiRequest(
-      `http://localhost:5000/api/subjects/${id}`,
+      `/api/subjects/${id}`,
       {
         method: "DELETE",
       },

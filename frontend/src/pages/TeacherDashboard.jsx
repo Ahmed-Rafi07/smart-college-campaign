@@ -43,7 +43,7 @@ const TeacherDashboard = ({ user }) => {
 
   const fetchSubjects = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/teacher/subjects", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/teacher/subjects", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -58,7 +58,7 @@ const TeacherDashboard = ({ user }) => {
   const fetchAssignments = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/teacher/assignments/${selectedSubject._id}`,
+        `https://smart-college-campaign.onrender.com/api/teacher/assignments/${selectedSubject._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -71,7 +71,7 @@ const TeacherDashboard = ({ user }) => {
   const fetchNotes = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/teacher/notes/${selectedSubject._id}`,
+        `https://smart-college-campaign.onrender.com/api/teacher/notes/${selectedSubject._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -84,7 +84,7 @@ const TeacherDashboard = ({ user }) => {
   const fetchExams = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/teacher/exams/${selectedSubject._id}`,
+        `https://smart-college-campaign.onrender.com/api/teacher/exams/${selectedSubject._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -97,7 +97,7 @@ const TeacherDashboard = ({ user }) => {
   const fetchAttendance = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/teacher/attendance/${selectedSubject._id}`,
+        `https://smart-college-campaign.onrender.com/api/teacher/attendance/${selectedSubject._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -114,7 +114,7 @@ const TeacherDashboard = ({ user }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/teacher/subjects", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/teacher/subjects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const TeacherDashboard = ({ user }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/teacher/assignments", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/teacher/assignments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const TeacherDashboard = ({ user }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/teacher/notes", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/teacher/notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const TeacherDashboard = ({ user }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/teacher/exams", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/teacher/exams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

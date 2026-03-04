@@ -9,7 +9,7 @@ const AttendancePanel = ({ token }) => {
   ========================= */
   useEffect(() => {
     const fetchSubjects = async () => {
-      const res = await fetch("http://localhost:5000/api/subjects", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/subjects", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -27,7 +27,7 @@ const AttendancePanel = ({ token }) => {
      MARK ATTENDANCE
   ========================= */
   const markAttendance = async (subjectId, status) => {
-    await fetch("http://localhost:5000/api/attendance", {
+    await fetch("https://smart-college-campaign.onrender.com/api/attendance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

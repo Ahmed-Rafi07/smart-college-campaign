@@ -7,7 +7,7 @@ const AttendanceTimeline = () => {
     const fetchHistory = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/attendance/history", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance/history", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

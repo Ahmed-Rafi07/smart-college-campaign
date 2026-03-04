@@ -10,7 +10,7 @@ const AdminReports = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/admin/analytics", {
+        const res = await fetch("https://smart-college-campaign.onrender.com/api/admin/analytics", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

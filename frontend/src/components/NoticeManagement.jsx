@@ -34,7 +34,7 @@ const NoticeManagement = () => {
   const fetchNotices = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/notices?limit=100", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/notices?limit=100", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -57,8 +57,8 @@ const NoticeManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingNotice
-        ? `http://localhost:5000/api/notices/${editingNotice._id}`
-        : "http://localhost:5000/api/notices";
+        ? `https://smart-college-campaign.onrender.com/api/notices/${editingNotice._id}`
+        : "https://smart-college-campaign.onrender.com/api/notices";
 
       const method = editingNotice ? "PUT" : "POST";
 
@@ -100,7 +100,7 @@ const NoticeManagement = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/notices/${id}`, {
+      await fetch(`https://smart-college-campaign.onrender.com/api/notices/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

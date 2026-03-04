@@ -17,7 +17,7 @@ const ClassCodeGenerator = ({ subjects, token }) => {
 
   const fetchActiveCodes = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/attendance/class-code/active", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance/class-code/active", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -40,7 +40,7 @@ const ClassCodeGenerator = ({ subjects, token }) => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/attendance/class-code/generate", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/attendance/class-code/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const ClassCodeGenerator = ({ subjects, token }) => {
 
   const deactivateCode = async (codeId) => {
     try {
-      await fetch(`http://localhost:5000/api/attendance/class-code/${codeId}`, {
+      await fetch(`https://smart-college-campaign.onrender.com/api/attendance/class-code/${codeId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

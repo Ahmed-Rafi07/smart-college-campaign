@@ -14,7 +14,7 @@ const ActivityFeed = () => {
 
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/activity/user/${user._id}`, {
+        const res = await fetch(`https://smart-college-campaign.onrender.com/api/activity/user/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

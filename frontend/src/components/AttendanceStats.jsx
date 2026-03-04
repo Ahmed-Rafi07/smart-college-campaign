@@ -6,7 +6,7 @@ const AttendanceStats = ({ subjectId, token }) => {
   useEffect(() => {
     const fetchStats = async () => {
       const res = await fetch(
-        `http://localhost:5000/api/attendance/${subjectId}`,
+        `https://smart-college-campaign.onrender.com/api/attendance/${subjectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

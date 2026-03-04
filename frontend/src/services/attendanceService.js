@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/attendance";
+const API = "https://smart-college-campaign.onrender.com/api/attendance";
 
 export const getAttendanceSummary = async (token) => {
   const res = await fetch(`${API}/summary`, {

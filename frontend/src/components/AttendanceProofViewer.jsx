@@ -14,7 +14,7 @@ const AttendanceProofViewer = ({ subjectId, subjectName, token }) => {
   const fetchProofs = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/attendance/proofs?subject=${subjectId}`,
+        `https://smart-college-campaign.onrender.com/api/attendance/proofs?subject=${subjectId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -34,7 +34,7 @@ const AttendanceProofViewer = ({ subjectId, subjectName, token }) => {
   const verifyProof = async (attendanceId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/attendance/verify/${attendanceId}`,
+        `https://smart-college-campaign.onrender.com/api/attendance/verify/${attendanceId}`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
@@ -89,7 +89,7 @@ const AttendanceProofViewer = ({ subjectId, subjectName, token }) => {
                 <div className="flex-shrink-0">
                   {proof.proofPhoto ? (
                     <img
-                      src={`http://localhost:5000/${proof.proofPhoto}`}
+                      src={`https://smart-college-campaign.onrender.com/${proof.proofPhoto}`}
                       alt="Proof"
                       className="w-24 h-24 object-cover rounded-lg cursor-pointer border-2 border-gray-300 hover:border-blue-500 transition"
                       onClick={() => setSelectedProof(proof)}
@@ -188,7 +188,7 @@ const AttendanceProofViewer = ({ subjectId, subjectName, token }) => {
 
             {selectedProof.proofPhoto && (
               <img
-                src={`http://localhost:5000/${selectedProof.proofPhoto}`}
+                src={`https://smart-college-campaign.onrender.com/${selectedProof.proofPhoto}`}
                 alt="Proof"
                 className="w-full rounded-lg mb-4"
               />

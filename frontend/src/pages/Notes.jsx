@@ -61,7 +61,7 @@ const Notes = () => {
         return;
       }
 
-      const url = new URL("http://localhost:5000/api/notes");
+      const url = new URL("https://smart-college-campaign.onrender.com/api/notes");
       if (search) {
         url.searchParams.append("search", search);
       }
@@ -111,7 +111,7 @@ const Notes = () => {
 
     try {
       for (const note of pending) {
-        await fetch("http://localhost:5000/api/notes", {
+        await fetch("https://smart-college-campaign.onrender.com/api/notes", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const Notes = () => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/notes", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -210,7 +210,7 @@ const Notes = () => {
 
     try {
       console.log("📝 Updating note:", id);
-      const res = await fetch(`http://localhost:5000/api/notes/${id}`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/notes/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -247,7 +247,7 @@ const Notes = () => {
 
     try {
       console.log("📝 Deleting note:", id);
-      const res = await fetch(`http://localhost:5000/api/notes/${id}`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/notes/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

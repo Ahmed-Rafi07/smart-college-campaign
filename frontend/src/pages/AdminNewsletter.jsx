@@ -15,14 +15,14 @@ const AdminNewsletter = () => {
         setLoading(true);
 
         // Fetch subscribers
-        const subsRes = await fetch("http://localhost:5000/api/newsletter/all", {
+        const subsRes = await fetch("https://smart-college-campaign.onrender.com/api/newsletter/all", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const subsData = await subsRes.json();
         setSubscribers(subsData);
 
         // Fetch stats
-        const statsRes = await fetch("http://localhost:5000/api/newsletter/stats", {
+        const statsRes = await fetch("https://smart-college-campaign.onrender.com/api/newsletter/stats", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const statsData = await statsRes.json();
@@ -39,7 +39,7 @@ const AdminNewsletter = () => {
 
   const handleExportCSV = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/newsletter/export/csv", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/newsletter/export/csv", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -60,7 +60,7 @@ const AdminNewsletter = () => {
     if (!confirm("Remove this subscriber?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/newsletter/${id}`, {
+      const res = await fetch(`https://smart-college-campaign.onrender.com/api/newsletter/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

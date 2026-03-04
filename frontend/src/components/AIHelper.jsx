@@ -50,7 +50,7 @@ export default function AIHelper() {
       if (!token) return;
 
       const res = await fetch(
-        `http://localhost:5000/api/ai/history/${subject}`,
+        `https://smart-college-campaign.onrender.com/api/ai/history/${subject}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const history = await res.json();
@@ -76,7 +76,7 @@ export default function AIHelper() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/ai/chat", {
+      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
