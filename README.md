@@ -289,6 +289,19 @@ Yenepoya School of Engineering
 
 This project is licensed under the MIT License.
 
+## 📷 Screenshots
+
+### Student Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Attendance System
+![Attendance](screenshots/attendance.png)
+
+### Admin Panel
+![Admin](screenshots/admin-panel.png)
+
+### AI Study Planner
+![AI Planner](screenshots/ai-helper.png)
 ---
 
 # ⭐ Support
