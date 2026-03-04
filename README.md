@@ -287,8 +287,28 @@ Yenepoya School of Engineering
 
 # 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License.\
+## Live Demo
 
+Frontend:
+https://smart-college-campaign.vercel.app
+
+Backend API:
+https://smart-college-campaign.onrender.com
+
+## 📷 Screenshots
+
+### Student Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Attendance System
+![Attendance](screenshots/attendance.png)
+
+### Admin Panel
+![Admin](screenshots/admin-panel.png)
+
+### AI Study Planner
+![AI Planner](screenshots/ai-helper.png)
 ---
 
 # ⭐ Support
