@@ -250,11 +250,11 @@ const AdminDashboard = () => {
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center">
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Access Denied</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-gray-800 mb-2">Access Denied</h2>
           <p className="text-red-600 mb-4">{error || "Failed to load data"}</p>
           <button
             onClick={() => navigate("/login")}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
           >
             Go to Login
           </button>
@@ -264,35 +264,37 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 overflow-hidden">
+      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:24px_24px]"></div>
+      <div className="relative z-10">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="flex items-center gap-4 mb-1">
-              <h1 className="text-2xl font-bold text-gray-800">🛡️ Admin Dashboard</h1>
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-800">🛡️ Admin Dashboard</h1>
               <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-semibold">
                 ADMIN
               </span>
             </div>
             <p className="text-sm text-gray-500">System Overview & Management</p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center w-full sm:w-auto">
             <button
               onClick={() => navigate("/")}
-              className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition text-xs sm:text-sm font-medium"
+              className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition text-sm font-medium"
             >
               🏠 Home
             </button>
             <button
               onClick={exportPDF}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-xs sm:text-sm font-medium"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
             >
               📥 Export Report
             </button>
             <button
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-xs sm:text-sm font-medium"
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
             >
               🚪 Logout
             </button>
@@ -301,9 +303,9 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div id="admin-report" className="max-w-7xl mx-auto px-8 py-8">
+      <div id="admin-report" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard 
             title="Total Users" 
             value={stats?.totalUsers || 0} 
@@ -331,7 +333,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Analytics */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <StatCard 
             title="Active Users (24h)" 
             value={stats?.activeUsersCount || 0} 
@@ -354,12 +356,12 @@ const AdminDashboard = () => {
 
         {/* Charts */}
         {chartData.length > 0 && (
-          <div className="grid md:grid-cols-2 gap-6 mt-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-8">
             {/* User Growth */}
-            <div className="bg-white rounded-xl shadow-sm p-6" style={{ minHeight: 340 }}>
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 transition transform hover:scale-[1.02]" style={{ minHeight: 340 }}>
               <h2 className="text-lg font-semibold text-gray-800 mb-4">📈 User Growth (7 days)</h2>
               <div style={{ width: '100%', height: 256 }}>
-                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={256}>
+                <ResponsiveContainer width="100%" height={256} minWidth={0}>
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
@@ -372,10 +374,10 @@ const AdminDashboard = () => {
             </div>
 
             {/* Attendance Trend */}
-            <div className="bg-white rounded-xl shadow-sm p-6" style={{ minHeight: 340 }}>
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 transition transform hover:scale-[1.02]" style={{ minHeight: 340 }}>
               <h2 className="text-lg font-semibold text-gray-800 mb-4">📊 Attendance Trend (7 days)</h2>
               <div style={{ width: '100%', height: 256 }}>
-                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={256}>
+                <ResponsiveContainer width="100%" height={256} minWidth={0}>
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
@@ -390,7 +392,7 @@ const AdminDashboard = () => {
         )}
 
         {/* Recent Logins */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8 transition transform hover:scale-[1.01]">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">🕒 Recent Logins</h2>
 
           {!stats.recentLogins || stats.recentLogins.length === 0 ? (
@@ -400,7 +402,7 @@ const AdminDashboard = () => {
               {stats.recentLogins.map((log) => (
                 <li
                   key={log._id}
-                  className="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 transition"
+                  className="border border-gray-200 rounded-lg p-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 hover:bg-gray-50 transition"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">
@@ -425,9 +427,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* Broadcast Notice */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8 transition transform hover:scale-[1.01]">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">📢 Broadcast Notice</h2>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               value={notice}
               onChange={(e) => setNotice(e.target.value)}
@@ -436,7 +438,7 @@ const AdminDashboard = () => {
             />
             <button
               onClick={sendBroadcast}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
             >
               Send
             </button>
@@ -444,19 +446,19 @@ const AdminDashboard = () => {
         </div>
 
         {/* Notice Management */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8">
           <NoticeManagement />
         </div>
 
         {/* User Management */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">👥 User Management</h2>
 
           {users.length === 0 ? (
             <p className="text-gray-500 text-sm">No users found</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200 text-sm">
+              <table className="min-w-full border-collapse border border-gray-200 text-sm">
                 <thead>
                   <tr className="bg-slate-100">
                     <th className="p-3 border border-gray-200 text-left">Name</th>
@@ -483,31 +485,33 @@ const AdminDashboard = () => {
                           <span className="text-green-600 font-medium">✅ Active</span>
                         )}
                       </td>
-                      <td className="p-3 border border-gray-200 space-x-2">
-                        <button
-                          onClick={() => blockUser(u._id, !u.blocked)}
-                          className={`px-3 py-1 text-white rounded text-xs font-medium transition ${
-                            u.blocked
-                              ? "bg-green-600 hover:bg-green-700"
-                              : "bg-yellow-500 hover:bg-yellow-600"
-                          }`}
-                        >
-                          {u.blocked ? "Unblock" : "Block"}
-                        </button>
+                      <td className="p-3 border border-gray-200">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => blockUser(u._id, !u.blocked)}
+                            className={`px-3 py-1 text-white rounded text-xs font-medium transition ${
+                              u.blocked
+                                ? "bg-green-600 hover:bg-green-700"
+                                : "bg-yellow-500 hover:bg-yellow-600"
+                            }`}
+                          >
+                            {u.blocked ? "Unblock" : "Block"}
+                          </button>
 
-                        <button
-                          onClick={() => forceLogout(u._id)}
-                          className="px-3 py-1 bg-red-500 text-white rounded text-xs font-medium hover:bg-red-600 transition"
-                        >
-                          Logout
-                        </button>
+                          <button
+                            onClick={() => forceLogout(u._id)}
+                            className="px-3 py-1 bg-red-500 text-white rounded text-xs font-medium hover:bg-red-600 transition"
+                          >
+                            Logout
+                          </button>
 
-                        <button
-                          onClick={() => resetAttendance(u._id)}
-                          className="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-medium hover:bg-indigo-700 transition"
-                        >
-                          Reset Att.
-                        </button>
+                          <button
+                            onClick={() => resetAttendance(u._id)}
+                            className="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-medium hover:bg-indigo-700 transition"
+                          >
+                            Reset Att.
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -518,7 +522,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Attendance Proof Management */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">📸 Attendance Proof Verification</h2>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -555,9 +559,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
-          <div className="grid md:grid-cols-4 gap-4">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8">
+          <h2 className="text-lg font-semibold tracking-tight text-gray-800 mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <ActionButton 
               icon="👥" 
               title="Manage Users" 
@@ -587,12 +591,13 @@ const AdminDashboard = () => {
 
         {/* Info Card */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
-          <h3 className="text-xl font-bold mb-2">👋 Welcome, Administrator!</h3>
+          <h3 className="text-xl font-semibold tracking-tight mb-2">👋 Welcome, Administrator!</h3>
           <p className="text-indigo-100">
             You have full access to system management tools. Use the dashboard to monitor user activity, 
             manage accounts, and configure system settings.
           </p>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -607,14 +612,14 @@ const StatCard = ({ title, value, icon, color }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition p-6 border border-gray-100">
+    <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02] p-6">
       <div className="flex items-center justify-between mb-2">
         <p className="text-gray-500 text-sm font-medium">{title}</p>
         <div className={`text-2xl bg-gradient-to-br ${colorClasses[color]} w-12 h-12 rounded-lg flex items-center justify-center`}>
           {icon}
         </div>
       </div>
-      <h2 className="text-3xl font-bold text-gray-800">{value}</h2>
+      <h2 className="text-3xl font-bold tracking-tight text-gray-800">{value}</h2>
       <div className="mt-2 text-xs text-gray-400">Updated just now</div>
     </div>
   );
@@ -623,7 +628,7 @@ const StatCard = ({ title, value, icon, color }) => {
 const ActionButton = ({ icon, title, description, onClick }) => (
   <button
     onClick={onClick}
-    className="text-left p-4 border-2 border-gray-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group cursor-pointer"
+    className="text-left p-4 border border-gray-200 rounded-lg bg-white/80 backdrop-blur-md hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group cursor-pointer"
   >
     <div className="text-3xl mb-2 group-hover:scale-110 transition">{icon}</div>
     <h3 className="font-semibold text-gray-800 mb-1">{title}</h3>

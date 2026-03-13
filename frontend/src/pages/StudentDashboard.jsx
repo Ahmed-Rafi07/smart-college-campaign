@@ -12,6 +12,8 @@ import AttendanceProofCapture from "../components/AttendanceProofCapture";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const getNextExam = (exams) => {
   const now = new Date();
   return exams
@@ -273,7 +275,7 @@ const StudentDashboard = ({ user }) => {
     setExamPlannerLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
+      const res = await fetch(`${API_URL}/api/ai/study-plan`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -565,9 +567,11 @@ const StudentDashboard = ({ user }) => {
   const overallAttendance = attendanceSummary.percentage;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex transition-opacity duration-500 opacity-100 animate-fade-in">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 overflow-hidden transition-opacity duration-500 opacity-100 animate-fade-in">
+      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:24px_24px]"></div>
+      <div className="flex relative z-10 min-h-screen">
       {/* ================= SIDEBAR ================= */}
-      <aside className="w-64 bg-gradient-to-b from-blue-700 via-blue-800 to-indigo-900 text-white p-6 hidden md:block shadow-xl">
+      <aside className="w-64 bg-gradient-to-b from-blue-600 to-indigo-700 text-white p-6 hidden md:block shadow-xl">
         <div className="mb-10 pb-4 border-b border-white/20">
           <BrandLogo
             titleClassName="text-white font-semibold"
@@ -623,7 +627,7 @@ const StudentDashboard = ({ user }) => {
             className="fixed inset-0 bg-black/50 z-40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           ></div>
-          <aside className="fixed left-0 top-0 bottom-0 w-64 bg-gradient-to-b from-blue-700 via-blue-800 to-indigo-900 text-white p-6 z-50 md:hidden shadow-2xl animate-slide-in">
+          <aside className="fixed left-0 top-0 bottom-0 w-64 bg-gradient-to-b from-blue-600 to-indigo-700 text-white p-6 z-50 md:hidden shadow-2xl animate-slide-in">
             <div className="flex items-center justify-between mb-10 pb-4 border-b border-white/20">
               <BrandLogo
                 titleClassName="text-white font-semibold"
@@ -680,7 +684,7 @@ const StudentDashboard = ({ user }) => {
       {/* ================= MAIN CONTENT ================= */}
       <main className="flex-1 p-4 md:p-6 overflow-y-auto">
         {/* TOP BAR */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-white rounded-xl shadow-sm p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4">
           <div className="flex items-center gap-4 w-full md:w-auto">
             {/* Mobile Menu Button */}
             <button
@@ -694,7 +698,7 @@ const StudentDashboard = ({ user }) => {
 
             <div className="flex-1 md:flex-none">
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+                <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-gray-800">
                   Welcome, {user?.name || "Student"} 👋
                 </h1>
                 {user?.role === "admin" && (
@@ -703,24 +707,24 @@ const StudentDashboard = ({ user }) => {
                   </span>
                 )}
               </div>
-              <p className="text-gray-500 text-sm">{activeTab}</p>
+              <p className="text-gray-500 text-sm font-medium tracking-wide">{activeTab}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 mt-3 md:mt-0">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
             <button
               onClick={() => navigate("/")}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-xs md:text-sm transition"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition"
             >
               🏠 Home
             </button>
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-xs md:text-sm transition"
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition"
             >
               Logout
             </button>
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-lg">
+            <div className="ml-auto sm:ml-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-lg">
               {user?.name?.charAt(0)?.toUpperCase() || "S"}
             </div>
           </div>
@@ -730,26 +734,26 @@ const StudentDashboard = ({ user }) => {
         {activeTab === "Dashboard" && (
           <>
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
-              <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Attendance</p>
                   <span className="text-2xl">📊</span>
                 </div>
-                <h2 className="text-3xl font-bold">{attendanceSummary.percentage}%</h2>
+                <h2 className="text-3xl font-bold tracking-tight">{attendanceSummary.percentage}%</h2>
                 <p className="text-xs opacity-75 mt-1">{attendanceSummary.totalPresent}/{attendanceSummary.totalClasses} classes</p>
               </div>
               
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Assignments Due</p>
                   <span className="text-2xl">📝</span>
                 </div>
-                <h2 className="text-3xl font-bold">{assignments.filter(a => !a.completed).length}</h2>
+                <h2 className="text-3xl font-bold tracking-tight">{assignments.filter(a => !a.completed).length}</h2>
                 <p className="text-xs opacity-75 mt-1">Pending tasks</p>
               </div>
               
-              <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Next Exam</p>
                   <span className="text-2xl">📅</span>
@@ -758,7 +762,7 @@ const StudentDashboard = ({ user }) => {
                   const nextExam = getNextExam(exams);
                   return nextExam ? (
                     <>
-                      <h2 className="text-lg font-bold">{nextExam.title}</h2>
+                      <h2 className="text-lg font-semibold tracking-tight">{nextExam.title}</h2>
                       <p className="text-xs opacity-75 mt-1">{new Date(nextExam.dateTime).toLocaleDateString()}</p>
                     </>
                   ) : (
@@ -814,10 +818,10 @@ const StudentDashboard = ({ user }) => {
             )}
 
             {/* Bottom Grid - Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
               
               {/* Quick Notes */}
-              <div className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <span>📓</span> Quick Notes
                 </h3>
@@ -838,7 +842,7 @@ const StudentDashboard = ({ user }) => {
               </div>
 
               {/* Ask the AI */}
-              <div className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <span>🤖</span> Ask the AI
                 </h3>
@@ -854,7 +858,7 @@ const StudentDashboard = ({ user }) => {
               </div>
 
               {/* Upcoming Reminders */}
-              <div className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <span>⏰</span> Upcoming Reminders
                 </h3>
@@ -895,10 +899,10 @@ const StudentDashboard = ({ user }) => {
 
             <div className="border-t my-6" />
 
-            <div className="bg-white rounded-xl shadow p-6 mt-6">
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mt-6">
               <h3 className="font-semibold mb-2">⏳ Next Exam Countdown</h3>
               {nextExamCountdown ? (
-                <p className="text-xl font-bold text-indigo-600">
+                <p className="text-3xl font-bold tracking-tight text-indigo-600">
                   {nextExamCountdown}
                 </p>
               ) : (
@@ -906,7 +910,7 @@ const StudentDashboard = ({ user }) => {
               )}
             </div>
 
-            <div className="bg-white rounded-xl shadow p-4 md:p-6 mt-6">
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4 md:p-6 mt-6">
               <h3 className="text-lg font-semibold mb-4">📝 Upcoming Exams</h3>
 
               <div className="grid gap-3 mb-4">
@@ -990,7 +994,7 @@ const StudentDashboard = ({ user }) => {
                       key={exam._id}
                       className="border rounded p-3"
                     >
-                      <div className="flex justify-between items-start gap-4">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                         <div>
                         <p className="font-medium">{exam.title}</p>
                         <p className="text-sm text-gray-500">
@@ -998,7 +1002,7 @@ const StudentDashboard = ({ user }) => {
                         </p>
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <button
                             onClick={() => {
                               const days = Math.ceil(
@@ -1006,7 +1010,7 @@ const StudentDashboard = ({ user }) => {
                               );
                               setAiPlanExamId(aiPlanExamId === exam._id ? null : exam._id);
                             }}
-                            className="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700"
+                            className="px-3 py-1 bg-purple-600 text-white rounded text-sm font-medium hover:bg-purple-700"
                             title="Generate AI Study Plan"
                           >
                             🤖 Study Plan
@@ -1031,7 +1035,7 @@ const StudentDashboard = ({ user }) => {
 
                               window.open(url, "_blank");
                             }}
-                            className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
+                            className="px-3 py-1 bg-blue-600 text-white rounded text-sm font-medium"
                           >
                             Add to Google Calendar
                           </button>
@@ -1089,7 +1093,7 @@ const StudentDashboard = ({ user }) => {
             </div>
 
             {/* Recent Assignments */}
-            <div className="bg-white rounded-xl shadow p-6 mt-8">
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mt-8">
               <h3 className="text-lg font-semibold mb-4">📝 Recent Assignments</h3>
               {(assignments || []).length === 0 ? (
                 <p className="text-gray-500 text-sm">No assignments yet</p>
@@ -1101,7 +1105,7 @@ const StudentDashboard = ({ user }) => {
                     .map((a) => (
                     <li
                       key={a._id}
-                      className="flex justify-between items-center border p-3 rounded"
+                      className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border p-3 rounded"
                     >
                       <div>
                         <p className={`font-semibold ${a.completed ? "line-through text-gray-400" : ""}`}>
@@ -1112,7 +1116,7 @@ const StudentDashboard = ({ user }) => {
                         </p>
                       </div>
 
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => toggleAssignment(a._id)}
                           className="px-3 py-1 text-sm rounded bg-orange-100 text-orange-700"
@@ -1137,10 +1141,10 @@ const StudentDashboard = ({ user }) => {
 
         {/* ================= SUBJECTS ================= */}
         {activeTab === "Subjects" && (
-          <div className="bg-white rounded-xl shadow p-6 space-y-4">
+          <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 space-y-4">
             <h3 className="text-lg font-semibold">📚 Your Subjects</h3>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 value={newSubject}
                 onChange={(e) => setNewSubject(e.target.value)}
@@ -1150,7 +1154,7 @@ const StudentDashboard = ({ user }) => {
               <button
                 onClick={handleAddSubject}
                 disabled={addingSubject}
-                className={`px-4 rounded text-white ${
+                className={`px-4 py-2 text-sm font-medium rounded text-white ${
                   addingSubject
                     ? "bg-gray-400"
                     : "bg-blue-600 hover:bg-blue-700"
@@ -1169,7 +1173,7 @@ const StudentDashboard = ({ user }) => {
                 {subjects.map((sub) => (
                   <li
                     key={sub._id}
-                    className="bg-slate-100 px-4 py-2 rounded flex justify-between items-center"
+                    className="bg-slate-100 px-4 py-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
                   >
                     <span>📘 {sub.name}</span>
                     <button
@@ -1187,7 +1191,7 @@ const StudentDashboard = ({ user }) => {
 
         {/* ================= ATTENDANCE ================= */}
         {activeTab === "Attendance" && (
-          <div className="bg-white rounded-xl shadow p-4 sm:p-6 w-full max-w-full overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-full overflow-hidden">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
               <h3 className="text-lg font-semibold">📅 Attendance Tracker</h3>
 
@@ -1288,21 +1292,23 @@ const StudentDashboard = ({ user }) => {
                   return (
                     <tr key={subject._id}>
                       <td className="p-3 border">{subject.name}</td>
-                      <td className="p-3 border space-x-2">
-                        <button
-                          onClick={() => setSelectedSubjectForProof(subject._id)}
-                          className="px-3 py-1 bg-green-100 text-green-700 rounded"
-                        >
-                          Present
-                        </button>
-                        <button
-                          onClick={() =>
-                            markAttendance(subject._id, "absent")
-                          }
-                          className="px-3 py-1 bg-red-100 text-red-700 rounded"
-                        >
-                          Absent
-                        </button>
+                      <td className="p-3 border">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => setSelectedSubjectForProof(subject._id)}
+                            className="px-3 py-1 bg-green-100 text-green-700 rounded"
+                          >
+                            Present
+                          </button>
+                          <button
+                            onClick={() =>
+                              markAttendance(subject._id, "absent")
+                            }
+                            className="px-3 py-1 bg-red-100 text-red-700 rounded"
+                          >
+                            Absent
+                          </button>
+                        </div>
                       </td>
                       <td className="p-3 border text-center">
                         {data.total}
@@ -1325,7 +1331,7 @@ const StudentDashboard = ({ user }) => {
 
         {/* ================= OTHER TABS ================= */}
         {activeTab === "Assignments" && (
-          <div className="bg-white rounded-xl shadow p-6 space-y-6">
+          <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 space-y-6">
             <h3 className="text-lg font-semibold">📝 Assignments</h3>
 
             {/* ADD ASSIGNMENT */}
@@ -1379,7 +1385,7 @@ const StudentDashboard = ({ user }) => {
                 {(assignments || []).map((a) => (
                   <li
                     key={a._id}
-                    className="flex justify-between items-center border p-3 rounded"
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border p-3 rounded"
                   >
                     <div>
                       <p className={`font-semibold ${a.completed ? "line-through text-gray-400" : ""}`}>
@@ -1390,7 +1396,7 @@ const StudentDashboard = ({ user }) => {
                       </p>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {!a.completed && (
                         <button
                           onClick={() => toggleAssignment(a._id)}
@@ -1438,11 +1444,12 @@ const StudentDashboard = ({ user }) => {
           activeTab !== "Assignments" &&
           activeTab !== "AI Helper" &&
           activeTab !== "Notices" && (
-            <div className="bg-white rounded-xl shadow p-6 text-gray-600">
+            <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 text-gray-600 transition hover:shadow-xl hover:-translate-y-1">
               🚧 <b>{activeTab}</b> module coming soon…
             </div>
           )}
       </main>
+      </div>
     </div>
   );
 };
@@ -1477,7 +1484,7 @@ const ExamCalendar = ({ exams }) => {
     });
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 mt-6">
+    <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mt-6">
       <h3 className="text-lg font-semibold mb-4">📅 Exam Calendar</h3>
 
       <div className="grid grid-cols-7 gap-2 text-center text-sm">
@@ -1532,7 +1539,7 @@ const StudyPlanner = () => {
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
+      const res = await fetch(`${API_URL}/api/ai/study-plan`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1608,7 +1615,7 @@ const AIStudyPlannerForExam = ({ examTitle, examSubject, examDate }) => {
         return;
       }
 
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
+      const res = await fetch(`${API_URL}/api/ai/study-plan`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

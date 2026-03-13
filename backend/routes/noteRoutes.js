@@ -3,10 +3,47 @@ const router = express.Router();
 const Note = require("../models/Note");
 const auth = require("../middleware/auth");
 const Groq = require("groq-sdk");
+const OpenAI = require("openai");
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+const configuredApiKey = (process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY || "").trim();
+const isGroqKey = configuredApiKey.startsWith("gsk_");
+const isOpenAIKey = configuredApiKey.startsWith("sk-");
+
+const groq = isGroqKey ? new Groq({ apiKey: configuredApiKey }) : null;
+const openai = isOpenAIKey ? new OpenAI({ apiKey: configuredApiKey }) : null;
+
+const createSummaryCompletion = async (content) => {
+  const messages = [
+    {
+      role: "system",
+      content: "You are a helpful assistant that creates concise summaries. Summarize in one sentence, maximum 100 characters.",
+    },
+    {
+      role: "user",
+      content: `Summarize this note: ${content}`,
+    },
+  ];
+
+  if (groq) {
+    return groq.chat.completions.create({
+      model: process.env.GROQ_MODEL || "llama-3.1-8b-instant",
+      messages,
+      temperature: 0.5,
+      max_tokens: 100,
+    });
+  }
+
+  if (openai) {
+    return openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      messages,
+      temperature: 0.5,
+      max_tokens: 100,
+    });
+  }
+
+  throw new Error("AI provider is not configured");
+};
 
 // Create note
 router.post("/", auth, async (req, res) => {
@@ -89,23 +126,9 @@ router.post("/:id/summarize", auth, async (req, res) => {
 
     try {
       // Try AI summarization
-      const completion = await groq.chat.completions.create({
-        model: "llama-3.1-8b-instant",
-        messages: [
-          { 
-            role: "system", 
-            content: "You are a helpful assistant that creates concise summaries. Summarize in one sentence, maximum 100 characters." 
-          },
-          { 
-            role: "user", 
-            content: `Summarize this note: ${note.content}` 
-          }
-        ],
-        temperature: 0.5,
-        max_tokens: 100,
-      });
+      const completion = await createSummaryCompletion(note.content);
 
-      const summary = completion.choices[0].message.content;
+      const summary = completion?.choices?.[0]?.message?.content || "Summary unavailable.";
       note.summary = summary;
       await note.save();
 

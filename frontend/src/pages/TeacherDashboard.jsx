@@ -239,17 +239,19 @@ const TeacherDashboard = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 overflow-hidden">
+      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:24px_24px]" />
+      <div className="relative z-10">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">👩‍🏫 Teacher Dashboard</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-800">👩‍🏫 Teacher Dashboard</h1>
             <p className="text-sm text-gray-500">Welcome, {user?.name || "Teacher"}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
+            className="w-full sm:w-auto bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
           >
             🚪 Logout
           </button>
@@ -257,11 +259,11 @@ const TeacherDashboard = ({ user }) => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Create Subject Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8 transition transform hover:scale-[1.01]">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">📚 Create Subject</h2>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               value={newSubject}
               onChange={(e) => setNewSubject(e.target.value)}
@@ -270,7 +272,7 @@ const TeacherDashboard = ({ user }) => {
             />
             <button
               onClick={addSubject}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
             >
               Add Subject
             </button>
@@ -279,9 +281,9 @@ const TeacherDashboard = ({ user }) => {
 
         {/* Subjects List */}
         {subjects.length > 0 && (
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mb-8 transition transform hover:scale-[1.01]">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">My Subjects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {subjects.map((subject) => (
                 <button
                   key={subject._id}
@@ -309,7 +311,7 @@ const TeacherDashboard = ({ user }) => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 font-medium transition whitespace-nowrap ${
+                  className={`px-4 py-2 text-sm font-semibold tracking-wide transition whitespace-nowrap ${
                     activeTab === tab
                       ? "border-b-2 border-blue-600 text-blue-600"
                       : "text-gray-600 hover:text-gray-800"
@@ -326,7 +328,7 @@ const TeacherDashboard = ({ user }) => {
             {/* Assignments Tab */}
             {activeTab === "assignments" && (
               <div className="space-y-6">
-                <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                   <h2 className="text-lg font-semibold text-gray-800 mb-4">Create Assignment</h2>
                   <div className="space-y-3">
                     <input
@@ -349,7 +351,7 @@ const TeacherDashboard = ({ user }) => {
                     />
                     <button
                       onClick={addAssignment}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
                     >
                       Create Assignment
                     </button>
@@ -357,7 +359,7 @@ const TeacherDashboard = ({ user }) => {
                 </div>
 
                 {assignments.length > 0 && (
-                  <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">Assignments</h2>
                     <div className="space-y-3">
                       {assignments.map((assignment) => (
@@ -382,7 +384,7 @@ const TeacherDashboard = ({ user }) => {
             {/* Notes Tab */}
             {activeTab === "notes" && (
               <div className="space-y-6">
-                <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                   <h2 className="text-lg font-semibold text-gray-800 mb-4">Upload Note</h2>
                   <div className="space-y-3">
                     <input
@@ -399,7 +401,7 @@ const TeacherDashboard = ({ user }) => {
                     />
                     <button
                       onClick={addNote}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
                     >
                       Upload Note
                     </button>
@@ -407,7 +409,7 @@ const TeacherDashboard = ({ user }) => {
                 </div>
 
                 {notes.length > 0 && (
-                  <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">Notes</h2>
                     <div className="space-y-3">
                       {notes.map((note) => (
@@ -428,7 +430,7 @@ const TeacherDashboard = ({ user }) => {
             {/* Exams Tab */}
             {activeTab === "exams" && (
               <div className="space-y-6">
-                <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                   <h2 className="text-lg font-semibold text-gray-800 mb-4">Create Exam</h2>
                   <div className="space-y-3">
                     <input
@@ -451,7 +453,7 @@ const TeacherDashboard = ({ user }) => {
                     />
                     <button
                       onClick={addExam}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
                     >
                       Create Exam
                     </button>
@@ -459,7 +461,7 @@ const TeacherDashboard = ({ user }) => {
                 </div>
 
                 {exams.length > 0 && (
-                  <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">Exams</h2>
                     <div className="space-y-3">
                       {exams.map((exam) => (
@@ -478,7 +480,7 @@ const TeacherDashboard = ({ user }) => {
 
             {/* Attendance Tab */}
             {activeTab === "attendance" && (
-              <div className="bg-white rounded-xl shadow-sm p-6">
+              <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4">📊 Class Attendance</h2>
                 
                 {/* Class Code Generator */}
@@ -494,22 +496,22 @@ const TeacherDashboard = ({ user }) => {
 
                 {attendance && (
                   <>
-                    <div className="grid grid-cols-3 gap-4 mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                       <div className="bg-blue-50 p-4 rounded-lg">
                         <p className="text-gray-600 text-sm">Total Records</p>
-                        <p className="text-3xl font-bold text-blue-600 mt-2">
+                        <p className="text-3xl font-bold tracking-tight text-blue-600 mt-2">
                           {attendance.statistics.total}
                         </p>
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
                         <p className="text-gray-600 text-sm">Present</p>
-                        <p className="text-3xl font-bold text-green-600 mt-2">
+                        <p className="text-3xl font-bold tracking-tight text-green-600 mt-2">
                           {attendance.statistics.present}
                         </p>
                       </div>
                       <div className="bg-red-50 p-4 rounded-lg">
                         <p className="text-gray-600 text-sm">Absent</p>
-                        <p className="text-3xl font-bold text-red-600 mt-2">
+                        <p className="text-3xl font-bold tracking-tight text-red-600 mt-2">
                           {attendance.statistics.absent}
                         </p>
                       </div>
@@ -526,7 +528,7 @@ const TeacherDashboard = ({ user }) => {
                     )}
 
                     <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
+                      <table className="min-w-full text-sm">
                         <thead>
                           <tr className="bg-slate-100 border-b">
                             <th className="p-3 text-left font-semibold">Student</th>
@@ -565,6 +567,7 @@ const TeacherDashboard = ({ user }) => {
             )}
           </>
         )}
+      </div>
       </div>
     </div>
   );

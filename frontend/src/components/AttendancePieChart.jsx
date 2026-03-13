@@ -18,9 +18,11 @@ const AttendancePieChart = ({ attendance }) => {
   let totalPresent = 0;
   let totalAbsent = 0;
 
-  Object.values(attendance).forEach((s) => {
-    totalPresent += s.present;
-    totalAbsent += s.total - s.present;
+  Object.values(attendance).forEach((s = {}) => {
+    const total = Number(s.total) || 0;
+    const present = Number(s.present) || 0;
+    totalPresent += present;
+    totalAbsent += Math.max(total - present, 0);
   });
 
   const data = [
@@ -40,11 +42,11 @@ const AttendancePieChart = ({ attendance }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 h-full" style={{ minHeight: 380 }}>
+    <div className="bg-white rounded-xl shadow p-6 h-[380px]">
       <h3 className="font-semibold mb-4">🥧 Overall Attendance</h3>
 
-      <div style={{ width: '100%', height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={300}>
+      <div className="w-full h-[300px]">
+        <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie
               data={data}

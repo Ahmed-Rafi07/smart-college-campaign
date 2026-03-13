@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function AIHelper() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -50,7 +52,7 @@ export default function AIHelper() {
       if (!token) return;
 
       const res = await fetch(
-        `https://smart-college-campaign.onrender.com/api/ai/history/${subject}`,
+        `${API_URL}/api/ai/history/${subject}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const history = await res.json();
@@ -76,7 +78,7 @@ export default function AIHelper() {
         return;
       }
 
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/chat", {
+      const res = await fetch(`${API_URL}/api/ai/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,20 +89,24 @@ export default function AIHelper() {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to reach AI service.");
+      }
 
       const aiMsg = { role: "assistant", content: data.reply };
       setMessages((prev) => [...prev, aiMsg]);
       
       if (data.offline) {
         setOffline(true);
+        if (data?.message) {
+          setError(`⚠️ ${data.message}`);
+        }
       } else {
         setOffline(false);
+        setError("");
       }
     } catch (err) {
-      setError("⚠️ AI is offline. Try again later or check internet.");
-      const aiMsg = { role: "assistant", content: "You're offline. Your message has been saved. Try again when connected." };
-      setMessages((prev) => [...prev, aiMsg]);
+      setError(err?.message || "⚠️ AI is offline. Try again later or check internet.");
       setOffline(true);
     } finally {
       setLoading(false);

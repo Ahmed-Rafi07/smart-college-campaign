@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function QuickNotes() {
   const [showEditor, setShowEditor] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -85,7 +87,7 @@ export default function QuickNotes() {
     
     setLoadingSummary(true);
     try {
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/summarize", {
+      const res = await fetch(`${API_URL}/api/ai/summarize`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

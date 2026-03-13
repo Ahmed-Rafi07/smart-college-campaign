@@ -1,6 +1,8 @@
 import { useState } from "react";
 import jsPDF from "jspdf";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function AIStudyPlanner() {
   const [days, setDays] = useState(7);
   const [subjects, setSubjects] = useState([]);
@@ -47,7 +49,7 @@ export default function AIStudyPlanner() {
         return;
       }
 
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/ai/study-plan", {
+      const res = await fetch(`${API_URL}/api/ai/study-plan`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
