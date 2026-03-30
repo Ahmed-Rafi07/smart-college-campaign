@@ -1,5 +1,6 @@
 import { useState } from "react";
 import jsPDF from "jspdf";
+import { CalendarDays, Sparkles, FileDown, LoaderCircle } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -72,7 +73,7 @@ export default function AIStudyPlanner() {
     } catch (err) {
       console.error("Generate Plan Error:", err);
       setError(err.message || "Failed to generate study plan");
-      setPlan("❌ Failed to generate study plan. Please try again.");
+      setPlan("Failed to generate study plan. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -118,7 +119,10 @@ export default function AIStudyPlanner() {
 
   return (
     <div className="bg-white rounded-xl shadow p-4 w-full max-w-md h-[420px] flex flex-col">
-      <h3 className="font-semibold text-lg mb-2">📅 AI Study Planner</h3>
+      <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
+        <CalendarDays size={20} />
+        AI Study Planner
+      </h3>
 
       <div className="mb-3">
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -173,9 +177,10 @@ export default function AIStudyPlanner() {
       <button
         onClick={generatePlan}
         disabled={loading || subjects.length === 0}
-        className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50 mb-3"
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50 mb-3 flex items-center justify-center gap-2"
       >
-        {loading ? "🔄 Generating..." : "✨ Generate Study Plan"}
+        {loading ? <LoaderCircle size={18} className="animate-spin" /> : <Sparkles size={18} />}
+        {loading ? "Generating..." : "Generate Study Plan"}
       </button>
 
       <div className="flex-1 overflow-y-auto bg-gray-50 rounded-lg p-3 text-sm min-h-[120px]">
@@ -195,9 +200,10 @@ export default function AIStudyPlanner() {
       <button
         onClick={downloadPlan}
         disabled={!plan || loading}
-        className="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm disabled:opacity-50 w-full font-semibold"
+        className="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm disabled:opacity-50 w-full font-semibold flex items-center justify-center gap-2"
       >
-        📥 Download PDF
+        <FileDown size={16} />
+        Download PDF
       </button>
     </div>
   );

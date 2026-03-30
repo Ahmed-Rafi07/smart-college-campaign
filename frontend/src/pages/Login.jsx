@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ParticlesBackground from "../components/ParticlesBackground";
+import { buildApiUrl } from "../services/apiBase";
 
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const Login = ({ setUser }) => {
       }
 
       // 🔐 BACKEND LOGIN (JWT)
-      const res = await fetch("https://smart-college-campaign.onrender.com/api/auth/login", {
+      const res = await fetch(buildApiUrl("/api/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

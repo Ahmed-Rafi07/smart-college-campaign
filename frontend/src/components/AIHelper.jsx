@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { Bot, FileText, Trash2, Mic, WifiOff } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -14,6 +15,7 @@ export default function AIHelper() {
   const [offline, setOffline] = useState(false);
   const messagesEndRef = useRef(null);
   const chatBoxRef = useRef(null);
+  const getStorageKey = (subjectName) => `aiChatMessages:${subjectName}`;
 
   // Initialize Web Speech API
   const recognition = useRef(null);
@@ -49,16 +51,49 @@ export default function AIHelper() {
   const loadChatHistory = async () => {
     try {
       const token = getToken();
-      if (!token) return;
+      if (!token) {
+        const cached = localStorage.getItem(getStorageKey(subject));
+        if (cached) setMessages(JSON.parse(cached));
+        return;
+      }
 
       const res = await fetch(
         `${API_URL}/api/ai/history/${subject}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const history = await res.json();
-      setMessages(history || []);
+      const normalizedHistory = history || [];
+      setMessages(normalizedHistory);
+      localStorage.setItem(getStorageKey(subject), JSON.stringify(normalizedHistory));
     } catch (err) {
       console.error("Failed to load history:", err);
+      const cached = localStorage.getItem(getStorageKey(subject));
+      if (cached) setMessages(JSON.parse(cached));
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem(getStorageKey(subject), JSON.stringify(messages));
+  }, [messages, subject]);
+
+  const handleClearChat = async () => {
+    const token = getToken();
+    setMessages([]);
+    setError("");
+    setOffline(false);
+    localStorage.removeItem(getStorageKey(subject));
+
+    if (!token) return;
+
+    try {
+      await fetch(`${API_URL}/api/ai/history/${subject}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to clear server chat history:", err);
     }
   };
 
@@ -99,14 +134,14 @@ export default function AIHelper() {
       if (data.offline) {
         setOffline(true);
         if (data?.message) {
-          setError(`⚠️ ${data.message}`);
+          setError(`Warning: ${data.message}`);
         }
       } else {
         setOffline(false);
         setError("");
       }
     } catch (err) {
-      setError(err?.message || "⚠️ AI is offline. Try again later or check internet.");
+      setError(err?.message || "AI is offline. Try again later or check internet.");
       setOffline(true);
     } finally {
       setLoading(false);
@@ -143,18 +178,26 @@ export default function AIHelper() {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow h-full flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">🤖 AI Study Assistant</h2>
-        {offline && <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">📴 Offline</span>}
+    <div className="w-full max-w-4xl mx-auto bg-white rounded-xl p-4 md:p-6 shadow h-full flex flex-col gap-4 overflow-hidden">
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Bot size={24} />
+          AI Study Assistant
+        </h2>
+        {offline && (
+          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded flex items-center gap-1">
+            <WifiOff size={14} />
+            Offline
+          </span>
+        )}
       </div>
 
       {/* Subject Selector */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <select
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="border rounded px-3 py-2 text-sm font-medium bg-gray-100"
+          className="w-full sm:w-auto border rounded-lg px-3 py-2 text-sm font-medium bg-gray-100"
         >
           <option value="general">General</option>
           <option value="dbms">DBMS</option>
@@ -163,18 +206,29 @@ export default function AIHelper() {
           <option value="dsa">DSA</option>
           <option value="web">Web Dev</option>
         </select>
-        <button
-          onClick={exportPDF}
-          className="text-sm bg-purple-600 text-white px-3 py-2 rounded hover:bg-purple-700"
-        >
-          📥 Export PDF
-        </button>
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap gap-2 w-full sm:w-auto">
+          <button
+            onClick={exportPDF}
+            className="text-sm bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto flex items-center justify-center gap-2"
+          >
+            <FileText size={16} />
+            Export PDF
+          </button>
+          <button
+            onClick={handleClearChat}
+            disabled={loading || messages.length === 0}
+            className="text-sm bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 disabled:opacity-50 w-full sm:w-auto flex items-center justify-center gap-2"
+          >
+            <Trash2 size={16} />
+            Clear Chat
+          </button>
+        </div>
       </div>
 
       {/* Chat Box - ChatGPT Style */}
       <div
         ref={chatBoxRef}
-        className="h-[300px] overflow-y-auto border rounded p-3 bg-gray-50 mb-4 space-y-3"
+        className="w-full flex-1 min-h-[300px] sm:min-h-[380px] overflow-y-auto border rounded-xl p-3 sm:p-4 bg-gray-50 space-y-4"
       >
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-400">
@@ -187,9 +241,9 @@ export default function AIHelper() {
               className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}
             >
               <div
-                className={`max-w-[70%] break-words whitespace-pre-wrap px-4 py-3 rounded-lg text-sm ${
+                className={`break-words whitespace-pre-wrap px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm max-w-[85%] sm:max-w-md ${
                   msg.role === "user"
-                    ? "mr-auto bg-indigo-500 text-white"
+                    ? "mr-auto bg-blue-500 text-white"
                     : "ml-auto bg-green-100 text-gray-900"
                 }`}
               >
@@ -210,29 +264,39 @@ export default function AIHelper() {
 
       {/* Input Area */}
       <div className="space-y-2">
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 mt-1">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask something... (Shift+Enter for new line)"
-            className="flex-1 border rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full flex-1 border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button
-            onClick={sendMessage}
-            disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 font-medium"
-          >
-            {loading ? "..." : "Send"}
-          </button>
-          <button
-            onClick={startVoiceInput}
-            disabled={isListening || loading}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 font-medium"
-            title="Voice input"
-          >
-            {isListening ? "🎤 Listening..." : "🎤"}
-          </button>
+          <div className="grid grid-cols-3 sm:flex gap-2 w-full sm:w-auto">
+            <button
+              onClick={sendMessage}
+              disabled={loading}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+            >
+              {loading ? "..." : "Send"}
+            </button>
+            <button
+              onClick={startVoiceInput}
+              disabled={isListening || loading}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium flex items-center justify-center"
+              title="Voice input"
+            >
+              {isListening ? "..." : <Mic size={18} />}
+            </button>
+            <button
+              onClick={handleClearChat}
+              disabled={loading || messages.length === 0}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 disabled:opacity-50 font-medium"
+              title="Clear current subject chat"
+            >
+              Clear
+            </button>
+          </div>
         </div>
         {error && <p className="text-red-500 text-sm">{error}</p>}
       </div>

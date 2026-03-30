@@ -1,4 +1,6 @@
-const DEFAULT_API_BASE_URL = "https://smart-college-campaign.onrender.com";
+const DEFAULT_API_BASE_URL = import.meta.env.DEV
+  ? "http://localhost:5000"
+  : "https://smart-college-campaign.onrender.com";
 
 const normalizeBaseUrl = (url) => (url || DEFAULT_API_BASE_URL).replace(/\/+$/, "");
 

@@ -163,7 +163,9 @@ function App() {
           path="/student/ai-helper"
           element={
             <ProtectedRoute role="student">
-              <AIHelper />
+              <div className="w-full max-w-4xl mx-auto px-3 sm:px-6 py-4">
+                <AIHelper />
+              </div>
             </ProtectedRoute>
           }
         />

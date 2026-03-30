@@ -247,6 +247,18 @@ router.get("/history/:subject", extractUserId, async (req, res) => {
   }
 });
 
+// Clear Chat History by Subject
+router.delete("/history/:subject", extractUserId, async (req, res) => {
+  try {
+    const subject = String(req.params.subject || "general").trim() || "general";
+    const deleted = await AIChat.findOneAndDelete({ userId: req.userId, subject });
+    res.json({ ok: true, cleared: Boolean(deleted), subject });
+  } catch (err) {
+    console.error("Clear History Error:", err);
+    res.status(500).json({ error: "Failed to clear history" });
+  }
+});
+
 // Get All Chats for User
 router.get("/chats", extractUserId, async (req, res) => {
   try {

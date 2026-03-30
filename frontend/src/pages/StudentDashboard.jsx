@@ -11,6 +11,23 @@ import Notices from "../components/Notices";
 import AttendanceProofCapture from "../components/AttendanceProofCapture";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import {
+  LayoutDashboard,
+  BookOpen,
+  CheckCircle2,
+  ClipboardList,
+  NotebookPen,
+  Bot,
+  Bell,
+  Shield,
+  House,
+  BarChart3,
+  FileCheck2,
+  CalendarDays,
+  TriangleAlert,
+  Clock3,
+  ArrowDownToLine,
+} from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -567,7 +584,7 @@ const StudentDashboard = ({ user }) => {
   const overallAttendance = attendanceSummary.percentage;
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 overflow-hidden transition-opacity duration-500 opacity-100 animate-fade-in">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 overflow-x-hidden transition-opacity duration-500 opacity-100 animate-fade-in">
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:24px_24px]"></div>
       <div className="flex relative z-10 min-h-screen">
       {/* ================= SIDEBAR ================= */}
@@ -582,13 +599,13 @@ const StudentDashboard = ({ user }) => {
         {/* STUDENT MENU */}
         <nav className="space-y-1 text-sm">
           {[
-            { label: "Dashboard", icon: "📊" },
-            { label: "Subjects", icon: "📚" },
-            { label: "Attendance", icon: "✅" },
-            { label: "Assignments", icon: "📝" },
-            { label: "Notes", icon: "📓" },
-            { label: "AI Helper", icon: "🤖" },
-            { label: "Notices", icon: "🔔" },
+            { label: "Dashboard", icon: <LayoutDashboard size={18} /> },
+            { label: "Subjects", icon: <BookOpen size={18} /> },
+            { label: "Attendance", icon: <CheckCircle2 size={18} /> },
+            { label: "Assignments", icon: <ClipboardList size={18} /> },
+            { label: "Notes", icon: <NotebookPen size={18} /> },
+            { label: "AI Helper", icon: <Bot size={18} /> },
+            { label: "Notices", icon: <Bell size={18} /> },
           ].map((item) => (
             <SidebarItem
               key={item.label}
@@ -610,7 +627,7 @@ const StudentDashboard = ({ user }) => {
             <>
               <div className="border-t border-white/20 my-4"></div>
               <SidebarItem
-                icon="🛡️"
+                icon={<Shield size={18} />}
                 label="Admin Panel"
                 active={false}
                 onClick={() => navigate("/admin")}
@@ -638,13 +655,13 @@ const StudentDashboard = ({ user }) => {
 
             <nav className="space-y-1 text-sm">
               {[
-                { label: "Dashboard", icon: "📊" },
-                { label: "Subjects", icon: "📚" },
-                { label: "Attendance", icon: "✅" },
-                { label: "Assignments", icon: "📝" },
-                { label: "Notes", icon: "📓" },
-                { label: "AI Helper", icon: "🤖" },
-                { label: "Notices", icon: "🔔" },
+                { label: "Dashboard", icon: <LayoutDashboard size={18} /> },
+                { label: "Subjects", icon: <BookOpen size={18} /> },
+                { label: "Attendance", icon: <CheckCircle2 size={18} /> },
+                { label: "Assignments", icon: <ClipboardList size={18} /> },
+                { label: "Notes", icon: <NotebookPen size={18} /> },
+                { label: "AI Helper", icon: <Bot size={18} /> },
+                { label: "Notices", icon: <Bell size={18} /> },
               ].map((item) => (
                 <SidebarItem
                   key={item.label}
@@ -666,7 +683,7 @@ const StudentDashboard = ({ user }) => {
                 <>
                   <div className="border-t border-white/20 my-4"></div>
                   <SidebarItem
-                    icon="🛡️"
+                    icon={<Shield size={18} />}
                     label="Admin Panel"
                     active={false}
                     onClick={() => {
@@ -682,7 +699,8 @@ const StudentDashboard = ({ user }) => {
       )}
 
       {/* ================= MAIN CONTENT ================= */}
-      <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+      <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-y-auto overflow-x-hidden pb-24">
+        <div className="w-full max-w-6xl mx-auto px-0 sm:px-2">
         {/* TOP BAR */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4">
           <div className="flex items-center gap-4 w-full md:w-auto">
@@ -716,7 +734,7 @@ const StudentDashboard = ({ user }) => {
               onClick={() => navigate("/")}
               className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition"
             >
-              🏠 Home
+              <span className="flex items-center gap-2"><House size={16} />Home</span>
             </button>
             <button
               onClick={handleLogout}
@@ -735,28 +753,28 @@ const StudentDashboard = ({ user }) => {
           <>
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
-              <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Attendance</p>
-                  <span className="text-2xl">📊</span>
+                  <BarChart3 size={24} />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight">{attendanceSummary.percentage}%</h2>
                 <p className="text-xs opacity-75 mt-1">{attendanceSummary.totalPresent}/{attendanceSummary.totalClasses} classes</p>
               </div>
               
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Assignments Due</p>
-                  <span className="text-2xl">📝</span>
+                  <FileCheck2 size={24} />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight">{assignments.filter(a => !a.completed).length}</h2>
                 <p className="text-xs opacity-75 mt-1">Pending tasks</p>
               </div>
               
-              <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm opacity-90">Next Exam</p>
-                  <span className="text-2xl">📅</span>
+                  <CalendarDays size={24} />
                 </div>
                 {(() => {
                   const nextExam = getNextExam(exams);
@@ -781,7 +799,7 @@ const StudentDashboard = ({ user }) => {
                     className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 rounded-xl p-4 shadow-md animate-pulse-slow"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl">🚨</span>
+                      <TriangleAlert size={24} className="text-red-600" />
                       <div className="flex-1">
                         <div className="flex items-start justify-between gap-4">
                           <h4 className="font-bold text-red-800 text-lg">
@@ -808,7 +826,7 @@ const StudentDashboard = ({ user }) => {
             {overallAttendance < 75 && (
               <div className="mb-6 p-4 rounded-xl border-l-4 border-red-500 bg-red-50 text-red-700 shadow-sm">
                 <div className="flex items-start gap-3">
-                  <span className="text-xl">⚠️</span>
+                  <TriangleAlert size={20} className="mt-0.5" />
                   <div>
                     <p className="font-semibold mb-1">Low Attendance Warning!</p>
                     <p className="text-sm">Your current attendance is <b>{overallAttendance}%</b>. Try to maintain at least <b>75%</b> to avoid issues.</p>
@@ -821,30 +839,30 @@ const StudentDashboard = ({ user }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
               
               {/* Quick Notes */}
-              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span>📓</span> Quick Notes
+                  <NotebookPen size={18} /> Quick Notes
                 </h3>
                 <div className="space-y-2">
                   <button 
                     onClick={() => setActiveTab("Notes")}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center gap-2"
                   >
-                    <span>⬇️</span> View Notes
+                    <ArrowDownToLine size={16} /> View Notes
                   </button>
                   <button 
                     onClick={() => navigate("/notes")}
                     className="w-full bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center gap-2"
                   >
-                    <span>📝</span> Create Note
+                    <ClipboardList size={16} /> Create Note
                   </button>
                 </div>
               </div>
 
               {/* Ask the AI */}
-              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span>🤖</span> Ask the AI
+                  <Bot size={18} /> Ask the AI
                 </h3>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm text-gray-600 mb-3">
                   How can I assist you today?
@@ -858,9 +876,9 @@ const StudentDashboard = ({ user }) => {
               </div>
 
               {/* Upcoming Reminders */}
-              <div className="bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
+              <div className="w-full overflow-hidden bg-white/80 backdrop-blur-md border border-gray-100 p-5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]">
                 <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span>⏰</span> Upcoming Reminders
+                  <Clock3 size={18} /> Upcoming Reminders
                 </h3>
                 <ul className="text-sm space-y-2.5">
                   {assignments.filter(a => !a.completed).slice(0, 2).map((assignment, i) => (
@@ -911,7 +929,7 @@ const StudentDashboard = ({ user }) => {
             </div>
 
             <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4 md:p-6 mt-6">
-              <h3 className="text-lg font-semibold mb-4">📝 Upcoming Exams</h3>
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><ClipboardList size={18} />Upcoming Exams</h3>
 
               <div className="grid gap-3 mb-4">
                 <div className="grid md:grid-cols-2 gap-3">
@@ -943,8 +961,9 @@ const StudentDashboard = ({ user }) => {
                 
                 {/* Exam Planner (AI Chat Style) */}
                 <div className="mt-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    🤖 AI Exam Planner (Optional)
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <Bot size={16} />
+                    AI Exam Planner (Optional)
                   </label>
                   <div className="flex items-center gap-2">
                     <input
@@ -969,7 +988,7 @@ const StudentDashboard = ({ user }) => {
                   </div>
                   {examPlannerResult && (
                     <div className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg text-sm text-gray-700">
-                      <p className="font-medium text-purple-700 mb-2">📚 Study Plan:</p>
+                      <p className="font-medium text-purple-700 mb-2 flex items-center gap-2"><BookOpen size={16} />Study Plan:</p>
                       <div className="max-h-[120px] overflow-y-auto pr-2">
                         <p className="whitespace-pre-line">{examPlannerResult}</p>
                       </div>
@@ -1013,7 +1032,7 @@ const StudentDashboard = ({ user }) => {
                             className="px-3 py-1 bg-purple-600 text-white rounded text-sm font-medium hover:bg-purple-700"
                             title="Generate AI Study Plan"
                           >
-                            🤖 Study Plan
+                            Study Plan
                           </button>
 
                           <button
@@ -1060,7 +1079,7 @@ const StudentDashboard = ({ user }) => {
                       )}
 
                       <div className="bg-slate-50 p-3 md:p-4 rounded-lg mt-3">
-                        <h4 className="font-semibold text-sm md:text-base mb-3">📚 Study Plan</h4>
+                        <h4 className="font-semibold text-sm md:text-base mb-3 flex items-center gap-2"><BookOpen size={16} />Study Plan</h4>
                         {generateStudyPlan(exam.dateTime).length === 0 ? (
                           <p className="text-gray-500 text-sm">
                             Exam date has passed
@@ -1086,7 +1105,7 @@ const StudentDashboard = ({ user }) => {
 
             <ExamCalendar exams={exams} />
 
-            <div className="grid md:grid-cols-3 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
               <QuickNotes />
               <AIHelper />
               <AIStudyPlanner />
@@ -1094,7 +1113,7 @@ const StudentDashboard = ({ user }) => {
 
             {/* Recent Assignments */}
             <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mt-8">
-              <h3 className="text-lg font-semibold mb-4">📝 Recent Assignments</h3>
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><ClipboardList size={18} />Recent Assignments</h3>
               {(assignments || []).length === 0 ? (
                 <p className="text-gray-500 text-sm">No assignments yet</p>
               ) : (
@@ -1142,7 +1161,7 @@ const StudentDashboard = ({ user }) => {
         {/* ================= SUBJECTS ================= */}
         {activeTab === "Subjects" && (
           <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 space-y-4">
-            <h3 className="text-lg font-semibold">📚 Your Subjects</h3>
+            <h3 className="text-lg font-semibold flex items-center gap-2"><BookOpen size={18} />Your Subjects</h3>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <input
@@ -1166,7 +1185,7 @@ const StudentDashboard = ({ user }) => {
 
             {subjects.length === 0 ? (
               <p className="text-gray-500 text-sm">
-                No subjects yet. Add your first subject 👆
+                No subjects yet. Add your first subject.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -1175,7 +1194,7 @@ const StudentDashboard = ({ user }) => {
                     key={sub._id}
                     className="bg-slate-100 px-4 py-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
                   >
-                    <span>📘 {sub.name}</span>
+                    <span className="flex items-center gap-2"><BookOpen size={16} />{sub.name}</span>
                     <button
                       onClick={() => handleDeleteSubject(sub._id)}
                       className="text-red-600 text-sm hover:underline"
@@ -1193,13 +1212,14 @@ const StudentDashboard = ({ user }) => {
         {activeTab === "Attendance" && (
           <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-full overflow-hidden">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-              <h3 className="text-lg font-semibold">📅 Attendance Tracker</h3>
+              <h3 className="text-lg font-semibold flex items-center gap-2"><CalendarDays size={18} />Attendance Tracker</h3>
 
               <button
                 onClick={exportAttendancePDF}
-                className="w-full sm:w-auto bg-indigo-600 text-white px-3 sm:px-4 py-2 rounded text-xs sm:text-sm hover:bg-indigo-700 transition"
+                className="w-full sm:w-auto bg-indigo-600 text-white px-3 sm:px-4 py-2 rounded text-xs sm:text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2"
               >
-                📄 Export PDF
+                <ArrowDownToLine size={14} />
+                Export PDF
               </button>
             </div>
 
@@ -1256,7 +1276,7 @@ const StudentDashboard = ({ user }) => {
 
             {overallAttendance < 75 && (
               <div className="mb-4 p-3 rounded border border-red-300 bg-red-50 text-red-700 text-sm">
-                ⚠️ Low attendance alert: <b>{overallAttendance}%</b>
+                Low attendance alert: <b>{overallAttendance}%</b>
                 <br />
                 Maintain at least 75% attendance.
               </div>
@@ -1332,7 +1352,7 @@ const StudentDashboard = ({ user }) => {
         {/* ================= OTHER TABS ================= */}
         {activeTab === "Assignments" && (
           <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 space-y-6">
-            <h3 className="text-lg font-semibold">📝 Assignments</h3>
+            <h3 className="text-lg font-semibold flex items-center gap-2"><ClipboardList size={18} />Assignments</h3>
 
             {/* ADD ASSIGNMENT */}
             <div className="grid md:grid-cols-4 gap-3">
@@ -1427,7 +1447,7 @@ const StudentDashboard = ({ user }) => {
         )}
 
         {activeTab === "AI Helper" && (
-          <div className="w-full">
+          <div className="w-full px-0 sm:px-2">
             <AIHelper />
           </div>
         )}
@@ -1448,6 +1468,7 @@ const StudentDashboard = ({ user }) => {
               🚧 <b>{activeTab}</b> module coming soon…
             </div>
           )}
+        </div>
       </main>
       </div>
     </div>
@@ -1465,7 +1486,7 @@ const SidebarItem = ({ icon, label, active, onClick }) => (
       active ? "bg-white/20 font-semibold shadow-md" : "hover:bg-white/10"
     }`}
   >
-    {icon && <span className="text-lg">{icon}</span>}
+    {icon && <span className="shrink-0">{icon}</span>}
     <span>{label}</span>
   </div>
 );
@@ -1485,7 +1506,7 @@ const ExamCalendar = ({ exams }) => {
 
   return (
     <div className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-lg p-6 mt-6">
-      <h3 className="text-lg font-semibold mb-4">📅 Exam Calendar</h3>
+      <h3 className="text-lg font-semibold mb-4 flex items-center gap-2"><CalendarDays size={18} />Exam Calendar</h3>
 
       <div className="grid grid-cols-7 gap-2 text-center text-sm">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
@@ -1564,7 +1585,7 @@ const StudyPlanner = () => {
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
-      <h3 className="font-semibold mb-4">📚 AI Study Planner</h3>
+      <h3 className="font-semibold mb-4 flex items-center gap-2"><BookOpen size={18} />AI Study Planner</h3>
       <label className="block text-sm text-gray-600 mb-2">Days until exam:</label>
       <input
         type="number"
@@ -1640,7 +1661,7 @@ const AIStudyPlannerForExam = ({ examTitle, examSubject, examDate }) => {
 
   return (
     <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded">
-      <h4 className="font-semibold mb-2">📚 AI Study Plan for {examTitle}</h4>
+      <h4 className="font-semibold mb-2 flex items-center gap-2"><BookOpen size={16} />AI Study Plan for {examTitle}</h4>
       <button
         onClick={generatePlan}
         disabled={loading}
@@ -1660,7 +1681,7 @@ const AIStudyPlannerForExam = ({ examTitle, examSubject, examDate }) => {
 
 const QuickNotes = () => (
   <div className="bg-white rounded-xl shadow p-6">
-    <h3 className="font-semibold mb-4">📘 Quick Notes</h3>
+    <h3 className="font-semibold mb-4 flex items-center gap-2"><NotebookPen size={18} />Quick Notes</h3>
     <button className="w-full bg-blue-600 text-white py-2 rounded mb-3">
       Download Notes
     </button>
@@ -1672,13 +1693,13 @@ const QuickNotes = () => (
 
 const Reminders = ({ reminders }) => (
   <div className="bg-white rounded-xl shadow p-6">
-    <h3 className="font-semibold mb-4">⏰ Upcoming Reminders</h3>
+    <h3 className="font-semibold mb-4 flex items-center gap-2"><Clock3 size={18} />Upcoming Reminders</h3>
     {reminders.length === 0 ? (
-      <p className="text-gray-500 text-sm">No reminders 🎉</p>
+      <p className="text-gray-500 text-sm">No reminders</p>
     ) : (
       <ul className="text-sm text-gray-600 space-y-3">
         {reminders.map((item, index) => (
-          <li key={index}>📌 {item}</li>
+          <li key={index}>{item}</li>
         ))}
       </ul>
     )}
