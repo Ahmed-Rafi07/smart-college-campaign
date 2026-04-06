@@ -197,7 +197,26 @@ router.post("/chat", extractUserId, async (req, res) => {
         messages: [
           { 
             role: "system", 
-            content: `You are a helpful AI study assistant for students. Topic: ${normalizedSubject}. Provide accurate, concise, and educational responses.` 
+            content: `You are a helpful AI study assistant for students learning about ${normalizedSubject}.
+
+IMPORTANT FORMATTING RULES (Follow these strictly):
+1. Keep responses SHORT and CONCISE - maximum 5-6 lines per response
+2. Use bullet points (•) when listing multiple items or concepts
+3. Avoid long paragraphs - break ideas into separate lines
+4. Use clear formatting with proper spacing
+5. Start with a brief main answer, then add details if needed
+6. Use numbered lists (1. 2. 3.) for step-by-step explanations
+
+EXAMPLE FORMAT:
+"Main concept here:
+• Key point 1
+• Key point 2
+• Key point 3
+
+For more details, ask follow-up questions!"
+
+Your response style: Educational, accurate, concise, and student-friendly.
+Topic: ${normalizedSubject}`
           },
           ...chat.messages.map(m => ({
             role: m.role,

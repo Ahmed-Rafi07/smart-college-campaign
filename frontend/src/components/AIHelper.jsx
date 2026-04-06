@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { Bot, FileText, Trash2, Mic, WifiOff } from "lucide-react";
+import { Bot, FileText, Trash2, Mic, WifiOff, ChevronDown } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -13,9 +13,35 @@ export default function AIHelper() {
   const [subject, setSubject] = useState("general");
   const [isListening, setIsListening] = useState(false);
   const [offline, setOffline] = useState(false);
+  const [expandedMessages, setExpandedMessages] = useState(new Set());
   const messagesEndRef = useRef(null);
   const chatBoxRef = useRef(null);
   const getStorageKey = (subjectName) => `aiChatMessages:${subjectName}`;
+
+  const toggleMessageExpand = (messageIndex) => {
+    const newExpanded = new Set(expandedMessages);
+    if (newExpanded.has(messageIndex)) {
+      newExpanded.delete(messageIndex);
+    } else {
+      newExpanded.add(messageIndex);
+    }
+    setExpandedMessages(newExpanded);
+  };
+
+  const isMessageLong = (content) => {
+    return content.split("\n").length > 5 || content.length > 300;
+  };
+
+  const truncateMessage = (content) => {
+    const lines = content.split("\n");
+    if (lines.length > 5) {
+      return lines.slice(0, 5).join("\n");
+    }
+    if (content.length > 300) {
+      return content.substring(0, 300);
+    }
+    return content;
+  };
 
   // Initialize Web Speech API
   const recognition = useRef(null);
@@ -178,128 +204,186 @@ export default function AIHelper() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-xl p-4 md:p-6 shadow h-full flex flex-col gap-4 overflow-hidden">
-      <div className="flex items-center justify-between gap-3 mb-2">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Bot size={24} />
-          AI Study Assistant
-        </h2>
-        {offline && (
-          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded flex items-center gap-1">
-            <WifiOff size={14} />
-            Offline
-          </span>
-        )}
-      </div>
-
-      {/* Subject Selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <select
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          className="w-full sm:w-auto border rounded-lg px-3 py-2 text-sm font-medium bg-gray-100"
-        >
-          <option value="general">General</option>
-          <option value="dbms">DBMS</option>
-          <option value="os">OS</option>
-          <option value="cn">Computer Networks</option>
-          <option value="dsa">DSA</option>
-          <option value="web">Web Dev</option>
-        </select>
-        <div className="grid grid-cols-1 sm:flex sm:flex-wrap gap-2 w-full sm:w-auto">
-          <button
-            onClick={exportPDF}
-            className="text-sm bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto flex items-center justify-center gap-2"
-          >
-            <FileText size={16} />
-            Export PDF
-          </button>
-          <button
-            onClick={handleClearChat}
-            disabled={loading || messages.length === 0}
-            className="text-sm bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 disabled:opacity-50 w-full sm:w-auto flex items-center justify-center gap-2"
-          >
-            <Trash2 size={16} />
-            Clear Chat
-          </button>
-        </div>
-      </div>
-
-      {/* Chat Box - ChatGPT Style */}
-      <div
-        ref={chatBoxRef}
-        className="w-full flex-1 min-h-[300px] sm:min-h-[380px] overflow-y-auto border rounded-xl p-3 sm:p-4 bg-gray-50 space-y-4"
-      >
-        {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400">
-            <p>Start a conversation about {subject}...</p>
-          </div>
-        ) : (
-          messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}
-            >
-              <div
-                className={`break-words whitespace-pre-wrap px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm max-w-[85%] sm:max-w-md ${
-                  msg.role === "user"
-                    ? "mr-auto bg-blue-500 text-white"
-                    : "ml-auto bg-green-100 text-gray-900"
-                }`}
+    <div className="w-full h-full bg-white rounded-2xl shadow-lg flex flex-col overflow-hidden border border-gray-200 min-h-[500px]">
+        
+        {/* ===== HEADER (Fixed) ===== */}
+        <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <div className="p-2.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex-shrink-0">
+              <Bot size={18} className="text-white" />
+            </div>
+            <div className="flex flex-col min-w-0">
+              <h2 className="text-base md:text-lg font-600 text-gray-900 truncate">AI Study Assistant</h2>
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="text-xs text-gray-600 bg-transparent border-0 focus:ring-0 cursor-pointer font-medium truncate"
               >
-                {msg.content}
-              </div>
-            </div>
-          ))
-        )}
-        {loading && (
-          <div className="flex justify-end">
-            <div className="bg-green-100 text-gray-900 px-4 py-3 rounded-lg max-w-[70%]">
-              <p className="text-sm italic">AI is thinking...</p>
+                <option value="general">General</option>
+                <option value="dbms">DBMS</option>
+                <option value="os">OS</option>
+                <option value="cn">Computer Networks</option>
+                <option value="dsa">DSA</option>
+                <option value="web">Web Dev</option>
+              </select>
             </div>
           </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Area */}
-      <div className="space-y-2">
-        <div className="flex flex-col sm:flex-row gap-2 mt-1">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Ask something... (Shift+Enter for new line)"
-            className="w-full flex-1 border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="grid grid-cols-3 sm:flex gap-2 w-full sm:w-auto">
+          
+          <div className="flex items-center gap-1.5 md:gap-2.5 flex-shrink-0">
+            {offline && (
+              <span className="text-xs bg-yellow-50 text-yellow-700 px-2 md:px-3 py-1.5 rounded-full flex items-center gap-1 font-medium border border-yellow-200 whitespace-nowrap">
+                <WifiOff size={12} />
+                <span className="hidden sm:inline">Offline</span>
+              </span>
+            )}
             <button
-              onClick={sendMessage}
-              disabled={loading}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+              onClick={exportPDF}
+              title="Export chat to PDF"
+              className="p-2 hover:bg-purple-50 text-purple-600 rounded-lg transition-colors duration-200 flex-shrink-0"
             >
-              {loading ? "..." : "Send"}
-            </button>
-            <button
-              onClick={startVoiceInput}
-              disabled={isListening || loading}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium flex items-center justify-center"
-              title="Voice input"
-            >
-              {isListening ? "..." : <Mic size={18} />}
+              <FileText size={16} />
             </button>
             <button
               onClick={handleClearChat}
               disabled={loading || messages.length === 0}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 disabled:opacity-50 font-medium"
-              title="Clear current subject chat"
+              title="Clear conversation"
+              className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
             >
-              Clear
+              <Trash2 size={16} />
             </button>
           </div>
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+
+        {/* ===== MESSAGES AREA (Scrollable) ===== */}
+        <div
+          ref={chatBoxRef}
+          className="flex-1 overflow-y-auto px-4 md:px-6 py-3 md:py-4 space-y-3 bg-gradient-to-b from-gray-50 to-white"
+          style={{ scrollBehavior: "smooth" }}
+        >
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center">
+              <Bot size={40} className="mb-2 opacity-20" />
+              <p className="text-sm md:text-base font-medium">Start a conversation about <span className="text-blue-500 font-semibold">{subject}</span></p>
+              <p className="text-xs md:text-sm mt-1">Ask anything and I'll help!</p>
+            </div>
+          ) : (
+            messages.map((msg, i) => {
+              const isLong = msg.role === "assistant" && isMessageLong(msg.content);
+              const isExpanded = expandedMessages.has(i);
+              const displayContent = isLong && !isExpanded ? truncateMessage(msg.content) : msg.content;
+
+              return (
+                <div
+                  key={i}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-fadeIn`}
+                  style={{
+                    animation: `fadeIn 0.3s ease-out`,
+                    "@keyframes fadeIn": {
+                      from: { opacity: 0, transform: "translateY(8px)" },
+                      to: { opacity: 1, transform: "translateY(0)" }
+                    }
+                  }}
+                >
+                  <div className="flex flex-col gap-2" style={{ maxWidth: msg.role === "user" ? "70%" : "75%" }}>
+                    <div
+                      className={`break-words whitespace-pre-wrap text-xs md:text-sm leading-relaxed transition-all duration-200 overflow-hidden ${
+                        msg.role === "user"
+                          ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white px-3 md:px-4 py-2 md:py-3 rounded-2xl rounded-br-md shadow-md"
+                          : "bg-gray-100 text-gray-900 px-3 md:px-4 py-2 md:py-3 rounded-2xl rounded-bl-md shadow-sm border border-gray-200"
+                      }`}
+                      style={{
+                        maxHeight: isLong && !isExpanded ? "200px" : "none",
+                        overflowY: isLong && !isExpanded ? "hidden" : "visible"
+                      }}
+                    >
+                      {displayContent}
+                      {isLong && !isExpanded && <span className="text-gray-500">...</span>}
+                    </div>
+                    
+                    {isLong && (
+                      <button
+                        onClick={() => toggleMessageExpand(i)}
+                        className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 py-1 rounded transition-colors self-start ml-1"
+                      >
+                        <ChevronDown 
+                          size={14} 
+                          style={{
+                            transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                            transition: "transform 0.2s"
+                          }}
+                        />
+                        {isExpanded ? "Show Less" : "Show More"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+          {loading && (
+            <div className="flex justify-start animate-fadeIn">
+              <div className="bg-gray-100 text-gray-900 px-3 md:px-4 py-2 md:py-3 rounded-2xl rounded-bl-md shadow-sm border border-gray-200">
+                <div className="flex gap-1.5">
+                  <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: "0ms"}}></span>
+                  <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: "150ms"}}></span>
+                  <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: "300ms"}}></span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* ===== INPUT AREA (Sticky Bottom) ===== */}
+        <div className="border-t border-gray-200 bg-gray-50 px-4 md:px-6 py-3 sticky bottom-0">
+          {error && (
+            <div className="mb-2 md:mb-3 p-2 md:p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs md:text-sm font-medium">
+              {error}
+            </div>
+          )}
+          
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask anything..."
+                disabled={loading}
+                className="flex-1 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 bg-white font-medium transition-all duration-200 disabled:opacity-60"
+              />
+              <button
+                onClick={startVoiceInput}
+                disabled={isListening || loading}
+                title="Voice input"
+                className="px-3 md:px-4 py-2 md:py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0"
+              >
+                {isListening ? (
+                  <span className="text-xs font-bold">●</span>
+                ) : (
+                  <Mic size={16} />
+                )}
+              </button>
+            </div>
+            
+            <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              className="w-full px-3 md:px-6 py-2 md:py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg font-semibold text-xs md:text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></span>
+                  <span>Sending</span>
+                </span>
+              ) : (
+                "Send"
+              )}
+            </button>
+          </div>
+          
+          <p className="text-xs text-gray-500 mt-2 text-center">Shift + Enter for new line</p>
+        </div>
       </div>
-    </div>
   );
 }
