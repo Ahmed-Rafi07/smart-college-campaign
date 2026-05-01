@@ -1,6 +1,7 @@
 import { useState } from "react";
 import jsPDF from "jspdf";
 import { CalendarDays, Sparkles, FileDown, LoaderCircle } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -189,7 +190,26 @@ export default function AIStudyPlanner() {
             <p className="text-gray-500">Generating your study plan...</p>
           </div>
         ) : plan ? (
-          <pre className="whitespace-pre-wrap text-gray-700 leading-relaxed">{plan}</pre>
+          <ReactMarkdown
+            components={{
+              p: (props) => <p className="mb-2 last:mb-0" {...props} />,
+              strong: (props) => <strong className="font-bold" {...props} />,
+              em: (props) => <em className="italic" {...props} />,
+              ul: (props) => <ul className="list-disc list-inside mb-2 ml-2" {...props} />,
+              ol: (props) => <ol className="list-decimal list-inside mb-2 ml-2" {...props} />,
+              li: (props) => <li className="mb-1 text-gray-700" {...props} />,
+              code: ({ inline, ...props }) => inline ? (
+                <code className="bg-gray-200 px-1.5 py-0.5 rounded text-gray-800 font-mono text-xs" {...props} />
+              ) : (
+                <code className="block bg-gray-200 p-2 rounded mb-2 font-mono text-xs overflow-x-auto" {...props} />
+              ),
+              h1: (props) => <h1 className="text-lg font-bold mb-2 text-gray-900" {...props} />,
+              h2: (props) => <h2 className="text-base font-bold mb-2 text-gray-900" {...props} />,
+              h3: (props) => <h3 className="text-sm font-bold mb-2 text-gray-900" {...props} />,
+            }}
+          >
+            {plan || ""}
+          </ReactMarkdown>
         ) : (
           <p className="text-gray-400 text-center">
             Add subjects and click "Generate Study Plan" to get started

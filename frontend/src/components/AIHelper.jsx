@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Bot, FileText, Trash2, Mic, WifiOff, ChevronDown } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -296,7 +297,30 @@ export default function AIHelper() {
                         overflowY: isLong && !isExpanded ? "hidden" : "visible"
                       }}
                     >
-                      {displayContent}
+                      {msg.role === "user" ? (
+                        displayContent
+                      ) : (
+                        <ReactMarkdown
+                          components={{
+                            p: (props) => <p className="mb-2 last:mb-0" {...props} />,
+                            strong: (props) => <strong className="font-bold" {...props} />,
+                            em: (props) => <em className="italic" {...props} />,
+                            ul: (props) => <ul className="list-disc list-inside mb-2" {...props} />,
+                            ol: (props) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                            li: (props) => <li className="mb-1" {...props} />,
+                            code: ({ inline, ...props }) => inline ? (
+                              <code className="bg-gray-200 px-1.5 py-0.5 rounded text-gray-800 font-mono text-xs" {...props} />
+                            ) : (
+                              <code className="block bg-gray-200 p-2 rounded mb-2 font-mono text-xs overflow-x-auto" {...props} />
+                            ),
+                            h1: (props) => <h1 className="text-lg font-bold mb-2" {...props} />,
+                            h2: (props) => <h2 className="text-base font-bold mb-2" {...props} />,
+                            h3: (props) => <h3 className="text-sm font-bold mb-2" {...props} />,
+                          }}
+                        >
+                          {displayContent || ""}
+                        </ReactMarkdown>
+                      )}
                       {isLong && !isExpanded && <span className="text-gray-500">...</span>}
                     </div>
                     
