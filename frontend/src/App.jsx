@@ -170,8 +170,10 @@ function App() {
           }
         />
 
+        <Route path="/ai-helper" element={<Navigate to="/student/ai-helper" replace />} />
+
         {/* Legacy AI route */}
-        <Route path="/ai" element={<Navigate to="/student/ai-helper" />} />
+        <Route path="/ai" element={<Navigate to="/student/ai-helper" replace />} />
 
         {/* FALLBACK */}
         <Route

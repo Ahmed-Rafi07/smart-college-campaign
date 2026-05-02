@@ -7,6 +7,8 @@ const Subjects = () => {
   const [subjects, setSubjects] = useState([]);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState("");
 
   const fetchSubjects = async () => {
     try {
@@ -28,24 +30,32 @@ const Subjects = () => {
   };
 
   const addSubject = async () => {
-    if (!name) return;
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
 
-    const data = await apiRequest(
-      "/api/subjects",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      setLoading(true);
+      const data = await apiRequest(
+        "/api/subjects",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: trimmedName }),
         },
-        body: JSON.stringify({ name }),
-      },
-      navigate
-    );
+        navigate
+      );
 
-    if (!data) return;
+      if (!data) return;
 
-    setName("");
-    fetchSubjects();
+      setSubjects((prev) => [...prev, data]);
+      setName("");
+    } catch (err) {
+      setError(err.message || "Failed to add subject");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteSubject = async (id) => {
@@ -55,17 +65,24 @@ const Subjects = () => {
 
     if (!confirmDelete) return;
 
-    const data = await apiRequest(
-      `/api/subjects/${id}`,
-      {
-        method: "DELETE",
-      },
-      navigate
-    );
+    try {
+      setDeletingId(id);
+      const data = await apiRequest(
+        `/api/subjects/${id}`,
+        {
+          method: "DELETE",
+        },
+        navigate
+      );
 
-    if (!data) return;
+      if (!data) return;
 
-    fetchSubjects();
+      setSubjects((prev) => prev.filter((sub) => sub._id !== id));
+    } catch (err) {
+      setError(err.message || "Failed to delete subject");
+    } finally {
+      setDeletingId("");
+    }
   };
 
   useEffect(() => {
@@ -82,14 +99,21 @@ const Subjects = () => {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addSubject();
+            }
+          }}
           placeholder="Add new subject"
           className="border px-3 py-2 rounded w-full"
         />
         <button
           onClick={addSubject}
-          className="bg-blue-600 text-white px-4 rounded"
+          disabled={loading || !name.trim()}
+          className="bg-blue-600 text-white px-4 rounded disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Add
+          {loading ? "Adding..." : "Add"}
         </button>
       </div>
 
@@ -108,9 +132,10 @@ const Subjects = () => {
 
             <button
               onClick={() => deleteSubject(sub._id)}
-              className="bg-red-100 text-red-700 px-3 py-1 rounded text-sm hover:bg-red-200"
+              disabled={deletingId === sub._id}
+              className="bg-red-100 text-red-700 px-3 py-1 rounded text-sm hover:bg-red-200 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Delete
+              {deletingId === sub._id ? "Deleting..." : "Delete"}
             </button>
           </li>
         ))}
